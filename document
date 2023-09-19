@@ -1,0 +1,54 @@
+# Setting up all the environments
+# We can use baremetals or virtual-machines to setup our environment
+# We can even use Vagrant to automate the process of setting up our virtual machines in our local
+
+# Installing using the baremetal
+
+# => When installing using the bare metal, we have to install the ubuntu using a bootable usb ubuntu installer
+# => once the OS is running and you are able to login, proceed with the instruction part after installing virtualbox and vagrant
+
+
+#when using virtual machines there are some prerequisite softwares that we have to install first
+
+1. virtualbox version 6.1 # this is the latest version that I found with less problem installing 
+# the k3s and vagrant. This may vary depends on the version of vagrant and what version of virtual box it currently support. 
+
+2. vagrant @latest version # if you decided to automate the process of installing the initial os and packages
+
+
+
+# after we are done setting up our nodes , we can proceed loging in on our main server
+# here we are setting up 2 nodes for server and 1 node for agent
+
+# Please see the Vagrantfile in our directory.
+# As you can see in the Vagrantfile. We provided a provisions to our 2 servers that will install the k3s automatically
+# As for the agent, we don't automate the installation of the k3s. Instead, we are going to login to it on ssh then install the k3s manually as a binary
+
+
+
+# Setting up OS for our server and agent
+# To automatically install all the OS's of our nodes we have to execute the Vagrantfile script
+# using our local machine, use the terminal to execute the command "vagrant up"
+# after all the process are done, you can be able to type into the terminal again
+# using the same terminal, we have to login to our primary server. based on the information in the Vagrant script. the primary server is the one with the hostname of "server01"
+# execute the command "vagrant ssh server01" to enter the ssh of that particular vm
+
+# if you have noticed, we added a flag "--disable-agent" to our provision when installing our k3s in our servers. that means we are disabling agent creation to our servers
+# by doing that, automatic server creation will also be disabled by default. we have to add the agent for the k3s to add the server automatically
+# right now, we are going to add the agent to our primary server. 
+# to do that we have to get the token of our server first. Execute this command
+  sudo cat /var/lib/rancher/k3s/server/node-token
+
+# adding agent to the server
+
+
+# Login to the target agent using ssh 
+# Install the k3s binary using this command without quote
+"culr -L -o https://github.com/rancher/k3s/"
+
+# copy the token then execute
+# replace the NODE-TOKEN with the tocken given by the server
+"sudo ./k3s agent --server https://myserver:6443 --token NODE-TOKEN"
+
+# the token should look like this
+"K103818f78cfb29e5da49aef10349d21516c7e8e1266c344e9672888ad0a39cdad3::server:1b71580ba4b454717e292af5102d101f"
