@@ -53,3 +53,31 @@
 # the token should look like this
 "K103818f78cfb29e5da49aef10349d21516c7e8e1266c344e9672888ad0a39cdad3::server:1b71580ba4b454717e292af5102d101f"
 
+
+
+
+
+# sudo -i
+# ufw disable 
+# or include 
+# ufw allow 6443/tcp #apiserver
+# ufw allow from 10.42.0.0/16 to any #pods
+# ufw allow from 10.43.0.0/16 to any #services
+
+curl -sfL https://get.k3s.io | sh -s - server \
+--token 1b71580ba4b454717e292af5102d101f \
+--tls-san 192.168.0.200 \
+--cluster-init
+
+curl -sfL https://get.k3s.io | sh -s - server \
+--token 1b71580ba4b454717e292af5102d101f \
+--tls-san 192.168.0.200 
+
+
+export INSTALL_K3S_EXEC="--docker --write-kubeconfig ~/.kube/config --write-kubeconfig-mode 666 --tls-san $K3S_EXTERNAL_IP --kube-apiserver-arg service-node-port-range=1-65000 --kube-apiserver-arg advertise-address=$K3S_EXTERNAL_IP --kube-apiserver-arg external-hostname=$K3S_EXTERNAL_IP"
+
+curl -sfL https://docs.rancher.cn/k3s/k3s-install.sh |  sh -
+
+curl -sfL https://get.k3s.io/ | INSTALL_K3S_EXEC="server --cluster-init --write-kubeconfig-mode 664 --write-kubeconfig ~/.kube/config --tls-san $K3S_EXTERNAL_IP --kube-apiserver-arg service-node-port-range=1-65000 --kube-apiserver-arg advertise-address=$K3S_EXTERNAL_IP --kube-apiserver-arg external-hostname=$K3S_EXTERNAL_IP" sh - 
+        sudo cp /var/lib/rancher/k3s/server/node-token /vagrant/shared/node-token
+        cp /etc/rancher/k3s/config.yaml /vagrant/shared
