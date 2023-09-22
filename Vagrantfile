@@ -40,7 +40,7 @@ agent_script = <<-SHELL
   SHELL
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "generic/alpine314"
+  config.vm.box = "bento/ubuntu-23.04"
 
   config.vm.define "server01", primary: true do |server|
     server.vm.network "private_network", ip: server_ip
