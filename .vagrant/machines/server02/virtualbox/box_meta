@@ -1,1 +1,1 @@
-{"name":"bento/ubuntu-23.04","version":"202309.08.0","provider":"virtualbox","directory":"boxes/bento-VAGRANTSLASH-ubuntu-23.04/202309.08.0/virtualbox"}
+{"name":"generic/alpine314","version":"4.2.16","provider":"virtualbox","directory":"boxes/generic-VAGRANTSLASH-alpine314/4.2.16/virtualbox"}

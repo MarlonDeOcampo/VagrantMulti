@@ -1,1 +1,1 @@
-{"virtualbox":{"/vagrant_shared":{"guestpath":"/vagrant_shared","hostpath":"/home/tns-des145/Documents/Vagrant/VagrantMulti/shared","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/tns-des145/Documents/Vagrant/VagrantMulti","disabled":false,"__vagrantfile":true}}}
+{"virtualbox":{"/vagrant_shared":{"guestpath":"/vagrant_shared","hostpath":"/home/tns-des145/Documents/Vagrant/VagrantMulti/shared","disabled":false,"__vagrantfile":true}}}

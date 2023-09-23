@@ -1,0 +1,5 @@
+checking the config of kubectl
+
+kubectl config view
+
+kubectl config set-context --current --namespace=<target namespace>

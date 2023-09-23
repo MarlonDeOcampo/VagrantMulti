@@ -53,7 +53,7 @@ a lot of time specially when you are just about to try or trying to learn all th
 as well as all the softwares that are dependent on the OS you initially installed on the virtual machine."
 
 # Vagrant runs in the background without a nice UI interface. You can only see the progress in the terminal where you have executed the command.
-# Vagrant also dependent on a file called "Vagrantfile" that should be manually created in the presently active directory you are at or the target directory you want to execute the command. 
+# Vagrant also dependent on a file called "Vagrantfile" that should be manually created in your current working directory.
 # To make this more clearer, lets start to do it in action
 
 
@@ -132,4 +132,4 @@ sudo mv kubectl /usr/local/bin
 "kubectl get nodes"
 
 
-
+# "kubectl get all -A"

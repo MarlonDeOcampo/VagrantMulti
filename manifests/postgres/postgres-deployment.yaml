@@ -1,0 +1,45 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      # nodeSelector:
+      #   kubernetes.io/hostname: agent
+      # volumes:
+      #   - name: pg-persistent-vol
+      #     persistentVolumeClaim:
+      #         claimName: pg-pvc
+      containers:
+        - name: postgres
+          image: postgres:15.4-alpine3.18
+          ports:
+            - containerPort: 5432
+            - containerPort: 80
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: pg-persistent-vol
+              mountPath: /var/lib/postgresql/data  
+          env:
+            - name: POSTGRES_DB
+              value: "postgres"
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword
+                  key: PGPASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+           
