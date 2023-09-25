@@ -1,9 +1,8 @@
-
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: postgres-deployment
 spec:
   replicas: 1
   selector:
@@ -14,32 +13,40 @@ spec:
       labels:
         app: postgres
     spec:
-      # nodeSelector:
-      #   kubernetes.io/hostname: agent
-      # volumes:
-      #   - name: pg-persistent-vol
-      #     persistentVolumeClaim:
-      #         claimName: pg-pvc
       containers:
         - name: postgres
           image: postgres:15.4-alpine3.18
+          imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432
-            - containerPort: 80
-          imagePullPolicy: IfNotPresent
-          volumeMounts:
-            - name: pg-persistent-vol
-              mountPath: /var/lib/postgresql/data  
           env:
             - name: POSTGRES_DB
               value: "postgres"
             - name: POSTGRES_USER
-              value: postgres
+              value: "postgres"
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: pgpassword
-                  key: PGPASSWORD
-            - name: PGDATA
-              value: /var/lib/postgresql/data/pgdata
-           
+                  name: postgres-secret-config
+                  key: POSTGRES_PASSWORD
+          volumeMounts:
+            - name: pg-persistent-vol
+              mountPath: /var/lib/postgresql/data
+      volumes:                                     
+      - name:  pg-persistent-vol
+        persistentVolumeClaim:
+          claimName: pg-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  postgres-service
+spec:
+  selector:
+    app:  postgres
+  ports:
+  - protocol: TCP
+    port:  5432
+    targetPort:  5432
+
+
