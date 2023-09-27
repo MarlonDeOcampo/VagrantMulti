@@ -1,0 +1,50 @@
+# ---
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: pgadminroute
+#   namespace: database
+# spec:
+#   entryPoints:
+#     - web
+#   routes:
+#     - match: Host(`newstars.pgadmin.com`)
+#       kind: Rule
+#       services:
+#         - name: pgadmin
+#           kind: TraefikService
+
+---
+# apiVersion: traefik.containo.us/v1alpha1
+# # kind: IngressRouteTCP
+# metadata:
+#   name: pgadminroute
+#   namespace: database
+# spec:
+#   entryPoints:
+#     - web
+#   routes:
+#     match: HostSNI(`newstars.pgadmin.com`)
+#     services:
+#       - name: pgadmin
+#         port: 80
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: pg-dashboard
+  namespace: database
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`newstars.pgadmin.com`)
+      kind: Rule
+      # middlewares:
+      #   - name: traefik-dashboard-basicauth
+      #     namespace: traefik
+      services:
+        - name: pgadmin
+     
+            

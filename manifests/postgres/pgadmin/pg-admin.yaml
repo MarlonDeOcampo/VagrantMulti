@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin
+  namespace: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgadmin
+  template:
+    metadata:
+      labels:
+        app: pgadmin
+    spec:
+      containers:
+      - name: pgadmin4
+        image: dpage/pgadmin4
+        ports:
+          - containerPort: 5050
+            name: pgadminport
+        env:
+          - name: PGADMIN_DEFAULT_EMAIL
+            value: "pgadmin@newstars.com"
+          - name: PGADMIN_DEFAULT_PASSWORD
+            value: "secret"
+          - name: PGADMIN_PORT
+            value: "5050"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin
+  namespace: database
+spec:
+  selector:
+    app: pgadmin
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 5050
+      targetPort: 5050
+
