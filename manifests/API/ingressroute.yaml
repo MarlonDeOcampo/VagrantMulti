@@ -1,0 +1,36 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: paymentservice
+  namespace: api-services
+spec:
+  entryPoints:
+    - web
+  routes:                          
+  - kind: Rule
+    match: Host(`newstars.api.com`)        
+    services:                       
+    - kind: Service
+      name: payment-service
+      namespace: api-services
+      passHostHeader: true
+      port: 80
+      responseForwarding:
+        flushInterval: 1ms
+      sticky:
+        cookie:
+          httpOnly: true
+          name: cookie
+          secure: true
+          sameSite: none
+      strategy: RoundRobin
+      weight: 10
+  # routes:
+  #   - match: Host('newstars.api.com')
+  #     kind: Rule
+  #     services:
+  #       - name: payment-service
+  #         namespace: api-services
+  #         kind: Service
+  #         port: 80
+      
