@@ -115,4 +115,12 @@ vi hosts
 ### Creating an NFS Kurbernetes provision
 
 - make sure that you have all the details of your nfs server shared path and the IP address 
-- go to the nfs
+- go to the nfs_provisioner folder
+- open each yaml file inside to change all the needed values if neccessary
+- create a namespace specifically for this deployment
+- deploy the rbac.yaml first then the class, pv, pvc and last the deployment
+- check the pod for provisioner if its running without problem
+- check the pvc if it successfully binded as well
+
+
+
