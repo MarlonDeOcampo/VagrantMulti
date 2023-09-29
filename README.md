@@ -13,7 +13,7 @@
 
 
 **Copy the master-server.sh to the main server machine via ssh**
- <code>  scp -r <file location> <user>@<Server Machine IP address> ~/$whoami/install.sh </code>
+ <code> "scp -r <file location> <user>@<Server Machine IP address> ~/$whoami/install.sh"</code>
 
 /home/tns-des145/Documents/Vagrant/VagrantMulti/scripts/agent.sh
 
