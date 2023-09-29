@@ -7,7 +7,7 @@ echo "what is the main server IP"
 read IP_ADDRESS
 echo "Please set/select flannel interface listed above"
 read INTERFACE
-
+sudo apt install -y nfs-common
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--cluster-init --flannel-iface=$INTERFACE --bind-address=$IP_ADDRESS" sh -s -
 
 echo "Sleeping for 5 seconds to wait for k3s to start"
