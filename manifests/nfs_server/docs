@@ -1,0 +1,32 @@
+# How to install nfs server
+
+sudo apt-get install nfs-kernel-server portmap -y
+
+## Create shared folder
+
+#   create mirror folder in the root directory
+    sudo mkdir /mirror
+
+#   change the owner of the mirror folder to nobody and no group
+    sudo chown nobody:nogroup /mirror
+
+#   add to the export folder - it tells the node that this is the folder that we can share 
+    sudo vi /etc/exports
+    put this code at the end of the file
+    /mirror *(rw,sync)  
+
+# export the file
+    sudo exportfs -a
+
+# ssh to all server and agents and install the nfs kernel as well
+    sudo apt install -y nfs-common
+
+# mount nfs_server folder to your client folder
+    mount -t nfs 172.24.31.49:/mirror /mirror
+    # check if its successfully mounted
+    mount | grep mirror
+    # to unmount
+    sudo umount /mirror
+
+
+
