@@ -12,6 +12,7 @@ K3s Cluster Installation
   - kubctl installation
   - ssh key copied to all target machines
 
+### Installation
 
 1. Copy the master-server.sh to the main server machine via ssh
 
@@ -19,8 +20,8 @@ K3s Cluster Installation
 scp -r FileLocation user@ServerMachineIPaddress ~/$whoami/install.sh"
 ```
 
-2. Ssh login to the target server then execute the install.sh**
-During the installation, the script will ask you the server IP address and the Network Interface name so make sure you have**
+2. Ssh login to the target server then execute the install.sh.
+During the installation, the script will ask you the server IP address and the Network Interface name so make sure you have
 them already before starting the script
 
 3. After the installation, The script will provide you the generated token and kube config so it is better to copy paste it to a notepad because you are going to use them during the installation of other servers and agent
