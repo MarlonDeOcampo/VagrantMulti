@@ -3,28 +3,28 @@ K3s Cluster Installation
 
 
 ### Prerequisite
-  Base installation for all of the machines
+#####  Base installation for all of the machines
  - all target machine should have linux server disto installed
  - static IP address for all of the machines
  - NFS common kernel installed 
   
-  Host machine
-  - kubctl installation
+#####  Host machine
+  - kubctl installed
   - ssh key copied to all target machines
 
 ### Installation
 
-1. Copy the master-server.sh to the main server machine via ssh
+- Copy the master-server.sh to the main server machine via ssh
 
 ```sh
 scp -r FileLocation user@ServerMachineIPaddress ~/$whoami/install.sh"
 ```
 
-2. Ssh login to the target server then execute the install.sh.
+- Ssh login to the target server then execute the install.sh.
 During the installation, the script will ask you the server IP address and the Network Interface name so make sure you have
 them already before starting the script
 
-3. After the installation, The script will provide you the generated token and kube config so it is better to copy paste it to a notepad because you are going to use them during the installation of other servers and agent
+- After the installation, The script will provide you the generated token and kube config information, so it is better to copy and paste it to a notepad because we are going to use them during the installation of other machines (agents and or other servers)
 
 
 #### during the installation,
