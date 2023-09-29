@@ -1,7 +1,8 @@
-## K3s Cluster Installation
+K3s Cluster Installation
+==================== 
 
 
-# Prerequisite
+### Prerequisite
   Base installation for all of the machines
  - all target machine should have linux server disto installed
  - static IP address for all of the machines
@@ -12,20 +13,23 @@
   - ssh key copied to all target machines
 
 
-**Copy the master-server.sh to the main server machine via ssh**
- <code> "scp -r <file location> <user>@<Server Machine IP address> ~/$whoami/install.sh"</code>
+#### Copy the master-server.sh to the main server machine via ssh
 
+> "scp -r <file location> <user>@<Server Machine IP address> ~/$whoami/install.sh"
+
+```sh
 /home/tns-des145/Documents/Vagrant/VagrantMulti/scripts/agent.sh
+```
+ 
+#### Ssh login to the target server then execute the install.sh**
 
-**Ssh login to the target server then execute the install.sh**
+#### During the installation, the script will ask you the server IP address and the Network Interface name so make sure you have**
+#### them already before starting the script
 
-**During the installation, the script will ask you the server IP address and the Network Interface name so make sure you have**
-# them already before starting the script
-
-# After the installation, The script will provide you the generated token and kube config so it is better to copy paste it to a notepad because you are going to use them during the installation of other servers and agent
+#### After the installation, The script will provide you the generated token and kube config so it is better to copy paste it to a notepad because you are going to use them during the installation of other servers and agent
 
 
-# during the installation,
+#### during the installation,
 
 We can use baremetals or virtual-machines to setup our environment. We can even use Vagrant to automate the process of setting up our virtual machines in our local.
 
