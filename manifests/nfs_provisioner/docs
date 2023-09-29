@@ -13,16 +13,19 @@ sudo apt-get install nfs-kernel-server portmap -y
 #   add to the export folder - it tells the node that this is the folder that we can share 
     sudo vi /etc/exports
     put this code at the end of the file
-    /mirror *(rw,sync)  
+    /mirror *(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
+ 
+# enable and start server
+    sudo systemctl enable --now nfs-server
 
 # export the file
-    sudo exportfs -a
+    sudo exportfs -rav
 
 # ssh to all server and agents and install the nfs kernel as well
     sudo apt install -y nfs-common
 
 # mount nfs_server folder to your client folder
-    mount -t nfs 172.24.31.49:/mirror /mirror
+    sudo mount -t nfs 172.24.31.49:/mirror /mirror
     # check if its successfully mounted
     mount | grep mirror
     # to unmount

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cc-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: managed-nfs-storage
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+ # persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /mirror
+    server: 172.24.31.49
+    readOnly: false

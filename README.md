@@ -112,3 +112,7 @@ vi hosts
 - put the dns name that you have added to the hosts file, in our case it is mydns.com and press enter to see the dashboard
 
 
+### Creating an NFS Kurbernetes provision
+
+- make sure that you have all the details of your nfs server shared path and the IP address 
+- go to the nfs
