@@ -123,4 +123,10 @@ vi hosts
 - check the pvc if it successfully binded as well
 
 
+### Deploying Postgres with NFS as its persistent volume
+- cd to postgres folder
+- check each yaml inside to check if there is something you need to change before the deployment
+- deploy secret then persistent-vol.yaml and last the postgres-deployment.yaml
+
+
 
