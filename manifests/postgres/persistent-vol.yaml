@@ -15,8 +15,8 @@ spec:
   accessModes:
   - ReadWriteMany
   nfs:
-    path: /mirror
-    server: 172.24.31.49
+    path: /shared/postgres_data
+    server: 172.24.31.52
     readOnly: false
 ---
 apiVersion: v1

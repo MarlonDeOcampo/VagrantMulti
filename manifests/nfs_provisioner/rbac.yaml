@@ -55,7 +55,7 @@ metadata:
   # change this based on the namespace you created specifically for NFS provision deployment
   namespace: nfs
 subjects:
-  - kind: ServiceAccountzzz
+  - kind: ServiceAccount
     name: nfs-client-provisioner
     # change this based on the namespace you created specifically for NFS provision deployment
     namespace: nfs

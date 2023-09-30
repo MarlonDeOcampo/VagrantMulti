@@ -4,4 +4,5 @@ metadata:
   name: managed-nfs-storage
 provisioner: k8s-sigs.io/nfs-subdir-external-provisioner # or choose another name, must match deployment's env PROVISIONER_NAME'
 parameters:
+  # set to false if you want to delete the data after deployment destroy/delete
   archiveOnDelete: "true"

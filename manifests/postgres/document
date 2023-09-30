@@ -3,3 +3,11 @@ checking the config of kubectl
 kubectl config view
 
 kubectl config set-context --current --namespace=<target namespace>
+
+
+CREATE TABLE Payments(
+   Paymentid      INT PRIMARY KEY     NOT NULL,
+   Userid         INT    NOT NULL,
+   Lastname       CHAR(50)     NOT NULL,
+   Firstname      CHAR(50),
+);

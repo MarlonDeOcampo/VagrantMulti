@@ -32,14 +32,14 @@ spec:
               value: k8s-sigs.io/nfs-subdir-external-provisioner
             - name: NFS_SERVER
             # change the IP address according to your requirement
-              value: 172.24.31.49
+              value: 172.24.31.52
             - name: NFS_PATH
             # change the path 
-              value: /mirror
+              value: /shared
       volumes:
         - name: nfs-client-root
           nfs:
             # change the IP address according to your requirement
-            server: 172.24.31.49
+            server: 172.24.31.52
             # change the path 
-            path: /mirror
+            path: /shared

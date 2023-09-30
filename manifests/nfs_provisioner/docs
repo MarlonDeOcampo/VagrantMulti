@@ -25,11 +25,14 @@ sudo apt-get install nfs-kernel-server portmap -y
     sudo apt install -y nfs-common
 
 # mount nfs_server folder to your client folder
-    sudo mount -t nfs 172.24.31.49:/mirror /mirror
+    sudo mount -t nfs 172.24.31.52:/shared /shared
     # check if its successfully mounted
     mount | grep mirror
     # to unmount
     sudo umount /mirror
+
+
+
 
 
 

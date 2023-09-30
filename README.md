@@ -12,6 +12,11 @@ K3s Cluster Installation
   - kubctl installed
   - ssh key copied to all target machines
 
+### How to ssh copy the ssh credentials to the target 
+```sh
+ssh-copy-id -i ~/.ssh/mykey user@host
+```
+
 ### Installation
 
 - Copy the master-server.sh to the main server machine via ssh
@@ -61,7 +66,7 @@ kubectl get nodes -o wide --watch
 ### Installation of agents
 - The instruction is the same as on how we installed the secondary server. The only difference is the script to use.
 - Copy the agent.sh to the target machine then ssh login to it to execute the script
-- after the installation. The Main server should detect the newly installed agent to its list of nodes connected it.
+- after the installation. The Main server should detect the newly installed agent to the list of nodes connected it.
 
 
 Installation of Containers and other prerequisite files
@@ -72,7 +77,7 @@ Installation of Containers and other prerequisite files
 
 We can now use the host machine to deploy containers and install other needed software to make our cluster do its job
 
-- go to the directory of the cloned repo the cd to manifests/metallb
+- go to the directory of the cloned repo then cd to manifests/metallb
 - execute the command to start the installation of metallb
 
 ```sh
@@ -82,7 +87,7 @@ We can now use the host machine to deploy containers and install other needed so
 ### Expose the Traefik Dashboard
 
 - cd to the traefik folder then execute the following command
-- we can edit the htpassword.yaml to match your desired password -  use htpassword generator that is freely available online. or we can use our TLS     certificate instead of using the htpassword secret 
+- we can edit the htpassword.yaml to match your desired password -  use htpassword generator that is freely available online. or we can use our TLS certificate, instead of using the htpassword secret 
 
 ```sh
 kubectl apply -f htpassword.yaml
@@ -99,7 +104,7 @@ kubectl apply -f auth-middleware.yaml
 kubectl apply -f traefik-dashboard.yaml
 ```
 
-- after the deployment, we have to add the IP address of the server and the a dns name the you like to the host file of our local machine
+- after the deployment, we have to add the IP address of the server and the a dns name that you like to the host file of our local machine
 - cd to /etc/
 - then execute this command
 
@@ -113,7 +118,7 @@ vi hosts
 
 
 ### Creating an NFS Kurbernetes provision
-
+- create a folder which should be parallel to the folder you've shared from the nfs server on each 
 - make sure that you have all the details of your nfs server shared path and the IP address 
 - go to the nfs_provisioner folder
 - open each yaml file inside to change all the needed values if neccessary
