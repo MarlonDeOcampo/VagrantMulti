@@ -8,13 +8,65 @@ spec:
     - web
     - websecure
   routes:
+  - match: Host(`newstars.api.com`) && PathPrefix(`/api`)
+    kind: Rule
+    services:
+      - name: payment-service
+        port: 80
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: paymentservice
+  namespace: api
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
   - match: Host(`newstars.api.com`)
     kind: Rule
     services:
     - kind: Service
       name: payment-service
-      namespace: api
+      namespace: koolaid-production
       port: 80
-
+  # ---
+#   apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: paymentservice
+#   namespace: api
+# spec:
+#   entryPoints:
+#     - web
+#     - websecure
+#   routes:
+#   - match: PathPrefix(`/payment`)
+#     kind: Rule
+#     services:
+#       - name: payment-service
+#         port: 80
+#   ---
+  # routes:                          
+  # - kind: Rule
+  #   match: Host(`http://newstars.api.com/`) && (PathPrefix(`/test`) || PathPrefix(`/apitest`))   
+  #   services:                       
+  #   - kind: Service
+  #     name: payment-service
+  #     namespace: api
+  #     passHostHeader: true
+  #     port: 80
+  #     responseForwarding:
+  #       flushInterval: 1ms
+  #     sticky:
+  #       cookie:
+  #         httpOnly: true
+  #         name: cookie
+  #         secure: true
+  #         sameSite: none
+  #     strategy: RoundRobin
+  #     weight: 10
  
       
