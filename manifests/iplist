@@ -1,4 +1,0 @@
-nfs_server: 172.24.31.49
-master_server: 172.24.31.40
-server02: 172.24.31.42
-agent: 172.24.31.47

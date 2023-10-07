@@ -12,6 +12,34 @@ K3s Cluster Installation
   - kubctl installed
   - ssh key copied to all target machines
 
+### How to install kubectl to the local machine
+- install curl first 
+
+```sh
+sudo -i 
+snap install curl 
+```
+- then
+```sh
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+```
+
+- validate
+
+```sh
+echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+```
+- install kubectl
+```sh
+  sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+```
+
+- to check
+```sh
+kubectl version --client
+```
+
+
 ### How to ssh copy the ssh credentials to the target 
 ```sh
 ssh-copy-id -i ~/.ssh/mykey user@host
@@ -26,7 +54,7 @@ apt install -y nfs-common
 - Copy the master-server.sh to the main server machine via ssh
 
 ```sh
-scp -r FileLocation user@ServerMachineIPaddress:~/$whoami/install.sh"
+scp -r FileLocation user@ServerMachineIPaddress:~/$whoami/install.sh
 ```
 
 - Ssh login to the target server then execute the install.sh.

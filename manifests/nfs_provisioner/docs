@@ -1,35 +1,35 @@
 # How to install nfs server
-
+sudo -i
 sudo apt-get install nfs-kernel-server portmap -y
 
 ## Create shared folder
 
 #   create mirror folder in the root directory
-    sudo mkdir /mirror
+    mkdir /desired-folder-name-tobeshared 
 
 #   change the owner of the mirror folder to nobody and no group
-    sudo chown nobody:nogroup /mirror
+    chown nobody:nogroup /desired-folder-name-tobeshared 
 
 #   add to the export folder - it tells the node that this is the folder that we can share 
-    sudo vi /etc/exports
+    vi /etc/exports
     put this code at the end of the file
-    /mirror *(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
+    /desired-folder-name-tobeshared *(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
  
 # enable and start server
-    sudo systemctl enable --now nfs-server
+    systemctl enable --now nfs-server
 
 # export the file
-    sudo exportfs -rav
+    exportfs -rav
 
-# ssh to all server and agents and install the nfs kernel as well
+# ssh to all server and agents and install the nfs kernel as well (do this only if the instation of nfs-common during the k3s installation has failed)
     sudo apt install -y nfs-common
 
 # mount nfs_server folder to your client folder
-    sudo mount -t nfs 172.24.31.52:/shared /shared
-    # check if its successfully mounted
-    mount | grep mirror
+    sudo mount -t nfs 172.24.31.52:/desired-folder-name-tobeshared /target-directory
+    # check if its successfully mounted - it should give you some information about the IP of the nfs-server -
+    mount | grep target-directory
     # to unmount
-    sudo umount /mirror
+    sudo umount target-directory
 
 
 
