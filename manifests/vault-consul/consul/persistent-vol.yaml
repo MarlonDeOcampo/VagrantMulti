@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: consul-persistent-vol
+  namespace: hashicorp
+  labels:
+    type: local
+spec:
+  storageClassName: managed-nfs-storage
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteMany
+  nfs:
+    path: /shared/consuldata
+    server: 172.24.31.52
+    readOnly: false
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: consul-nfs-pvc
+  namespace: hashicorp
+spec:
+  storageClassName: managed-nfs-storage
+  accessModes:
+   - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi

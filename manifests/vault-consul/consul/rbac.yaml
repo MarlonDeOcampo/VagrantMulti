@@ -1,0 +1,502 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: consul-consul-connect-injector
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: connect-injector
+rules:
+- apiGroups:
+  - consul.hashicorp.com
+  resources:
+  - servicedefaults
+  - serviceresolvers
+  - proxydefaults
+  - meshes
+  - exportedservices
+  - servicerouters
+  - servicesplitters
+  - serviceintentions
+  - ingressgateways
+  - terminatinggateways
+  - gatewayclassconfigs
+  - meshservices
+  - samenessgroups
+  - controlplanerequestlimits
+  - jwtproviders
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - consul.hashicorp.com
+  resources:
+  - servicedefaults/status
+  - serviceresolvers/status
+  - proxydefaults/status
+  - meshes/status
+  - exportedservices/status
+  - servicerouters/status
+  - servicesplitters/status
+  - serviceintentions/status
+  - ingressgateways/status
+  - terminatinggateways/status
+  - samenessgroups/status
+  - controlplanerequestlimits/status
+  - jwtproviders/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups: [ "" ]
+  resources: [ "secrets", "serviceaccounts", "endpoints", "services", "namespaces", "nodes" ]
+  verbs:
+  - create
+  - get
+  - list
+  - watch
+  - delete
+  - update
+- apiGroups: [ "rbac.authorization.k8s.io" ]
+  resources: [ "roles", "rolebindings" ]
+  verbs:
+  - get
+  - list
+  - watch
+  - delete
+  - create
+  - update
+- apiGroups: [ "" ]
+  resources:
+  - pods
+  verbs:
+  - "get"
+  - "list"
+  - "watch"
+  - "update"
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+  - get
+  - list
+  - update
+- apiGroups: [ "policy" ]
+  resources: [ "podsecuritypolicies" ]
+  verbs:
+  - use
+- apiGroups:
+  - gateway.networking.k8s.io
+  resources:
+  - gatewayclasses
+  - gateways
+  - httproutes
+  - tcproutes
+  - referencegrants
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - gateway.networking.k8s.io
+  resources:
+  - gatewayclasses/finalizers
+  - gateways/finalizers
+  - httproutes/finalizers
+  - tcproutes/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - gateway.networking.k8s.io
+  resources:
+  - gatewayclasses/status
+  - gateways/status
+  - httproutes/status
+  - tcproutes/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+    - apps
+  resources:
+    - deployments
+  verbs:
+    - create
+    - get
+    - list
+    - update
+    - watch
+    - delete
+- apiGroups:
+    - core
+  resources:
+    - services
+  verbs:
+    - watch
+    - list
+- apiGroups: [ "" ]
+  resources: [ "secrets" ]
+  verbs:
+    - "get"
+    - "list"
+    - "watch"
+---
+# Source: consul/templates/gateway-cleanup-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: consul-consul-gateway-cleanup
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: gateway-cleanup
+rules:
+  - apiGroups:
+    - consul.hashicorp.com
+    resources:
+    - gatewayclassconfigs
+    verbs:
+    - get
+    - delete
+  - apiGroups:
+    - gateway.networking.k8s.io
+    resources:
+    - gatewayclasses
+    verbs:
+    - get
+    - delete
+---
+# Source: consul/templates/gateway-resources-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: consul-consul-gateway-resources
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: gateway-resources
+rules:
+  - apiGroups:
+    - consul.hashicorp.com
+    resources:
+    - gatewayclassconfigs
+    verbs:
+    - get
+    - update
+    - create
+  - apiGroups:
+    - gateway.networking.k8s.io
+    resources:
+    - gatewayclasses
+    verbs:
+    - get
+    - update
+    - create
+---
+# Source: consul/templates/server-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: consul-consul-server
+  namespace: hashicorp
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: server
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs:
+  - get
+---
+# Source: consul/templates/webhook-cert-manager-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: consul-consul-webhook-cert-manager
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: webhook-cert-manager
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - mutatingwebhookconfigurations
+  verbs:
+  - get
+  - list
+  - watch
+  - patch
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  resourceNames:
+  - consul-consul-webhook-cert-manager
+  verbs:
+  - get
+---
+# Source: consul/templates/connect-inject-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: consul-consul-connect-injector
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: connect-injector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: consul-consul-connect-injector
+subjects:
+- kind: ServiceAccount
+  name: consul-consul-connect-injector
+  namespace: hashicorp
+---
+# Source: consul/templates/gateway-cleanup-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: consul-consul-gateway-cleanup
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: gateway-cleanup
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: consul-consul-gateway-cleanup
+subjects:
+  - kind: ServiceAccount
+    name: consul-consul-gateway-cleanup
+    namespace: hashicorp
+---
+# Source: consul/templates/gateway-resources-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: consul-consul-gateway-resources
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: gateway-resources
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: consul-consul-gateway-resources
+subjects:
+  - kind: ServiceAccount
+    name: consul-consul-gateway-resources
+    namespace: hashicorp
+---
+# Source: consul/templates/server-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: consul-consul-server
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: consul-consul-server
+subjects:
+- kind: ServiceAccount
+  name: consul-consul-server
+  namespace: hashicorp
+---
+# Source: consul/templates/webhook-cert-manager-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: consul-consul-webhook-cert-manager
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: webhook-cert-manager
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: consul-consul-webhook-cert-manager
+subjects:
+- kind: ServiceAccount
+  name: consul-consul-webhook-cert-manager
+  namespace: hashicorp
+---
+# Source: consul/templates/client-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: consul-consul-client
+  namespace: hashicorp
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: client
+rules: []
+---
+# Source: consul/templates/connect-inject-leader-election-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: consul-consul-connect-inject-leader-election
+  namespace: hashicorp
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: connect-injector
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps/status
+  verbs:
+  - get
+  - update
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+---
+# Source: consul/templates/server-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: consul-consul-server
+  namespace: hashicorp
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: server
+rules: []
+---
+# Source: consul/templates/client-rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: consul-consul-client
+  namespace: hashicorp
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: client
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: consul-consul-client
+subjects:
+  - kind: ServiceAccount
+    name: consul-consul-client
+---
+# Source: consul/templates/connect-inject-leader-election-rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: consul-consul-connect-inject-leader-election
+  namespace: hashicorp
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: connect-injector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: consul-consul-connect-inject-leader-election
+subjects:
+- kind: ServiceAccount
+  name: consul-consul-connect-injector
+  namespace: hashicorp
+---
+# Source: consul/templates/server-rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: consul-consul-server
+  namespace: hashicorp
+  labels:
+    app: consul
+    chart: consul-helm
+    heritage: Helm
+    release: consul
+    component: server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: consul-consul-server
+subjects:
+  - kind: ServiceAccount
+    name: consul-consul-server

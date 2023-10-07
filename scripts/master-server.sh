@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 # Auto-Install Main Server
-sudo -i
+# sudo -i
 ip address show
 echo "what is the main server IP"
 read IP_ADDRESS

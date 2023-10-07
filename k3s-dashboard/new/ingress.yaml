@@ -1,0 +1,40 @@
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashboard-ingress
+  namespace: kube-system
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+  - host: newstars.kubedashboard.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/test"
+        backend:
+          service:
+            name: dashboard-clusterip-svc
+            port:
+              number: 443
+
+# ---
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: dashboard-ingress
+#   namespace: kube-system
+# spec:
+#   entryPoints:
+#     - web
+#     - websecure
+#   routes:
+#   - match: Host(`newstars.kubedashboard.com`) 
+#     kind: Rule
+#     services:
+#     - kind: Service
+#       name: dashboard-clusterip-svc
+#       namespace: kube-system
+#       port: 
+#         443
