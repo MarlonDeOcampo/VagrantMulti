@@ -16,7 +16,7 @@ spec:
   - ReadWriteMany
   nfs:
     path: /shared/consuldata
-    server: 172.24.31.52
+    server: 172.24.31.50
     readOnly: false
 ---
 apiVersion: v1
