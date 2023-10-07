@@ -16,13 +16,17 @@ K3s Cluster Installation
 ```sh
 ssh-copy-id -i ~/.ssh/mykey user@host
 ```
+### Install NFS common to all machines
+```sh
+apt install -y nfs-common
+```
 
 ### Installation
 
 - Copy the master-server.sh to the main server machine via ssh
 
 ```sh
-scp -r FileLocation user@ServerMachineIPaddress ~/$whoami/install.sh"
+scp -r FileLocation user@ServerMachineIPaddress:~/$whoami/install.sh"
 ```
 
 - Ssh login to the target server then execute the install.sh.
@@ -81,6 +85,7 @@ We can now use the host machine to deploy containers and install other needed so
 - execute the command to start the installation of metallb
 
 ```sh
+  kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.11/config/manifests/metallb-native.yaml
   kubectl apply -f metallb.yaml
 ```
 
