@@ -1,14 +1,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-server_ip = "192.168.56.10"
+server_ip = "172.24.31.40"
 
 server_script = <<-SHELL
   sudo -i
-  # swapoff -a
-  # sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
-  # echo "127.0.1.1   k3s.newstars.io     server01" >> /etc/hosts
-  export INSTALL_K3S_EXEC="--cluster-init --bind-address=#{server_ip} --node-external-ip=#{server_ip} --flannel-iface=eth1"
+  apt update
+  apt install -y nfs-common
+  export INSTALL_K3S_EXEC="--cluster-init --bind-address=#{server_ip} --node-external-ip=#{server_ip} --flannel-iface=enp0s8"
   curl -sfL https://get.k3s.io | sh -
   echo "Sleeping for 5 seconds to wait for k3s to start"
   sleep 5
@@ -18,24 +17,18 @@ server_script = <<-SHELL
 
 server02_script = <<-SHELL
   sudo -i
-  # swapoff -a
-  # sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
-  # echo "127.0.1.1   k3s.newstars.io     server02" >> /etc/hosts
   export K3S_TOKEN_FILE=/vagrant_shared/token
   export K3S_URL=https://#{server_ip}:6443
-  export INSTALL_K3S_EXEC="server --flannel-iface=eth1 --disable-etcd"
+  export INSTALL_K3S_EXEC="server --flannel-iface=enp0s8 --disable-etcd"
   curl -sfL https://get.k3s.io | sh -
   SHELL
 
 
 agent_script = <<-SHELL
   sudo -i
-  # swapoff -a
-  # sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
-  # echo "127.0.1.1   k3s.newstars.io     agent" >> /etc/hosts
   export K3S_TOKEN_FILE=/vagrant_shared/token
   export K3S_URL=https://#{server_ip}:6443
-  export INSTALL_K3S_EXEC="--flannel-iface=eth1"
+  export INSTALL_K3S_EXEC="--flannel-iface=enp0s8"
   curl -sfL https://get.k3s.io | sh -
   SHELL
 
@@ -53,7 +46,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "server02" do |server02|
-    server02.vm.network "private_network", ip: "192.168.56.11"
+    server02.vm.network "private_network", ip: "172.24.31.41"
     server02.vm.synced_folder "./shared", "/vagrant_shared"
     server02.vm.hostname = "server02"
     server02.vm.provider "virtualbox" do |vb|
@@ -64,7 +57,7 @@ Vagrant.configure("2") do |config|
 end
 
   config.vm.define "agent" do |agent|
-      agent.vm.network "private_network", ip: "192.168.56.12"
+      agent.vm.network "private_network", ip: "172.24.31.42"
       agent.vm.synced_folder "./shared", "/vagrant_shared"
       agent.vm.hostname = "agent"
       agent.vm.provider "virtualbox" do |vb|

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-client-provisioner
+  labels:
+    app: nfs-client-provisioner
+  # change this based on the namespace you created specifically for NFS provision deployment
+  namespace: hashicorp
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner
+  template:
+    metadata:
+      labels:
+        app: nfs-client-provisioner
+    spec:
+      serviceAccountName: nfs-client-provisioner
+      containers:
+        - name: nfs-client-provisioner
+          image: gcr.io/k8s-staging-sig-storage/nfs-subdir-external-provisioner:v4.0.1
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+              value: managed-nfs-storage
+            - name: managed-nfs-storage
+              value: k8s-sigs.io/nfs-subdir-external-provisioner
+            - name: NFS_SERVER
+            # change the IP address according to your requirement
+              value: 172.24.31.50
+            - name: NFS_PATH
+            # change the path 
+              value: /shared
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            # change the IP address according to your requirement
+            server: 172.24.31.50
+            # change the path 
+            path: /shared

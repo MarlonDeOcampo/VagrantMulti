@@ -1,0 +1,81 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vault-ingress
+  namespace: hashicorp
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+spec:
+  # ingressClassName: main
+  tls:
+  - hosts:
+    - vault.dev.domain.com
+  rules:
+  - host: vault.dev.domain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: consul-consul-ui
+            port:
+              number: 80
+      # - path: /
+      #   pathType: Prefix
+      #   backend:
+      #     service:
+      #       name: vault
+      #       port:
+      #         number: 8200
+---
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   name: main-traffic-route
+#   namespace: hashicorp
+# spec:
+#   entryPoints:
+#     - web
+#     - websecure
+#   routes:
+#     - match: Host(`vault.dev.domain.com`)
+#       kind: Rule
+#       services:
+#         - name: vault
+#           port: 8200
+# ---
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: traefik-ingress
+#   # namespace: hashicorp
+#   annotations:
+#     traefik.ingress.kubernetes.io/router.entrypoints: web
+# spec:
+#   rules:
+#     - host: vault.dev.domain.com
+#       http:
+#         paths:
+#           - path: /consul
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: consul-consul-ui
+#                 port:
+#                   number: 80
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: vault
+#                 port:
+#                   number: 8200
+          # - path: /
+          #   pathType: Prefix
+          #   backend:
+          #     service:
+          #       name: theia-svc
+          #       port:
+          #         number: 80

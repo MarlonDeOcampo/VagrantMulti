@@ -2,8 +2,12 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pg-persistent-vol
-  namespace: database
+  annotations:
+    pv.kubernetes.io/provisioned-by: rancher.io/local-path
+  finalizers:
+  - kubernetes.io/pv-protection
+  name: consul-pv
+  namespace: hashicorp
   labels:
     type: local
 spec:
@@ -15,15 +19,15 @@ spec:
   accessModes:
   - ReadWriteMany
   nfs:
-    path: /shared/postgres_data
+    path: /shared/consul_data
     server: 172.24.31.50
     readOnly: false
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pg-nfs-pvc
-  namespace: database
+  name: data-hashicorp-consul-consul-server-0 
+  namespace: hashicorp
 spec:
   storageClassName: managed-nfs-storage
   accessModes:

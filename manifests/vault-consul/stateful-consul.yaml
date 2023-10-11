@@ -1,0 +1,58 @@
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    meta.helm.sh/release-name: consul
+    meta.helm.sh/release-namespace: hashicorp
+  creationTimestamp: "2023-10-09T02:58:58Z"
+  generation: 1
+  labels:
+    app: consul
+    app.kubernetes.io/managed-by: Helm
+    chart: consul-helm
+    component: server
+    heritage: Helm
+    release: consul
+  name: consul-consul-server
+  namespace: hashicorp
+  resourceVersion: "50805"
+  uid: bdb1f4d0-85e0-4abe-a9d7-445175d386bf
+spec:
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
+  podManagementPolicy: Parallel
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: consul
+      chart: consul-helm
+      component: server
+      hasDNS: "true"
+      release: consul
+  serviceName: consul-consul-server
+  template:
+    metadata:
+      annotations:
+        consul.hashicorp.com/config-checksum: 655dd7253b339ea19959d8a53ce3e07248d63bf5efca5cc89bd3a02090c09e19
+        consul.hashicorp.com/connect-inject: "false"
+      creationTimestamp: null
+      labels:
+        app: consul
+        chart: consul-helm
+        component: server
+        hasDNS: "true"
+        release: consul
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: consul
+                component: server
+                release: consul
+            topologyKey: kubernetes.io/hostname
+     

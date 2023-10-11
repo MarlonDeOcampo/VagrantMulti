@@ -1,0 +1,14 @@
+global:
+  datacenter: vault-kubernetes-tutorial
+
+client:
+  enabled: true
+
+server:
+  replicas: 1
+  bootstrapExpect: 1
+  disruptionBudget:
+    maxUnavailable: 0
+  # storageClass: managed-nfs-storage
+  # Environment:
+  #   CONSUL_DISABLE_PERM_MGMT: true

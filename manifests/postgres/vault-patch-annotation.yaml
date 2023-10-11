@@ -1,0 +1,8 @@
+spec:
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-secret-database-config.txt: "secret/data/postgres/config"
+        vault.hashicorp.com/role: "postgres"
+        

@@ -17,10 +17,9 @@ spec:
     spec:
       containers:
       - name:  payment-service
-        image:  alhon05/gosimplecrud:v12
+        image:  alhon05/gosimplecrud:v15
         ports:
         - containerPort: 4005
-
 ---
 #Service
 apiVersion: v1
@@ -33,7 +32,7 @@ spec:
     app: payment-service
   # Should be typed ClusterIP - NodePort if you want to bypass the ingress and fortforward the traffic to the desired port just for testing purposes only
   # Port forward using  - kubectl port-forward pod/pod-name 4005:4005
-  type: ClusterIP 
+  type: NodePort 
   ports:
     - protocol: TCP
       port: 80
