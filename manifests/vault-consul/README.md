@@ -99,7 +99,7 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 - lets verify if the secrets were saved in our vault storage
 
 ```sh
-    vault kv get secret/webapp/config
+    vault kv get secret/postgres/config
 ```
 
 ### configure the authentication of kubernetes to have a read only access in our vault storage
@@ -115,7 +115,9 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 - Configure the Kubernetes authentication method to use the location of the Kubernetes API.
 
 ```sh
-    vault write auth/kubernetes/config kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"  
+    vault write auth/kubernetes/config kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443" \
+    # token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
+    # kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
 ```
 
 - success confirmation should be seen after the execution of both commands
@@ -148,7 +150,7 @@ EOF
 
 - first deploy the secret.yaml, then the pvc and last the postgres-deployment.yaml
 
-- check the postgres pod if it is running successfully withour error
+- check the postgres pod if it is running successfully without error
 
 - let us check if the service account created during the execution of postgres deployment has successfully have access to the vault by executing this command
 
@@ -167,17 +169,29 @@ command terminated with exit code 1"
 
 - check logs if there is an error
 ```sh
-    kubectl logs pod-name -c vault-agent-init -n database
+    kubectl logs \
+      $(kubectl get pod -l app=postgres -o jsonpath="{.items[0].metadata.name}") \
+      --container vault-agent
+```
+- get the secret writen in our text file
+
+```sh
+    kubectl exec \
+      $(kubectl get pod -l app=postgres -o jsonpath="{.items[0].metadata.name}") \
+      --container postgres -- cat /vault/secrets/database-config.txt
 ```
 
 - check if the database-config is now accessible 
 ```sh
     kubectl exec -ti postgres-deployment-688959d495-j9srp -n database -c postgres -- ls -l /vault/secrets
 ```
+
 ## Helper
 
 ### Injecting secrets to kubernetes
 https://developer.hashicorp.com/vault/tutorials/kubernetes/kubernetes-sidecar
 
 https://www.youtube.com/watch?v=R3EYd9YnShU
+
+
 

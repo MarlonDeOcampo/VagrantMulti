@@ -1,38 +1,38 @@
-# apiVersion: traefik.containo.us/v1alpha1
-# kind: IngressRoute
-# metadata:
-#   name: paymentservice
-#   namespace: api
-# spec:
-#   entryPoints:
-#     - web
-#     - websecure
-#   routes:
-#   - match: Host(`newstars.api.com`) 
-#     kind: Rule
-#     services:
-#     - kind: Service
-#       name: payment-service
-#       namespace: api
-#       port: 80
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
-  name: paymentserviceingress
+  name: paymentservice
   namespace: api
-  # annotations:
-  #   nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
-  rules:
-  - host: newstars.api.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: payment-service
-            port:
-              number: 80
+  entryPoints:
+    - web
+    - websecure
+  routes:
+  - match: Host(`newstars.api.com`) 
+    kind: Rule
+    services:
+    - kind: Service
+      name: payment-service
+      namespace: api
+      port: 80
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: paymentserviceingress
+#   namespace: api
+#   # annotations:
+#   #   nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+# spec:
+#   rules:
+#   - host: newstars.api.com
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: payment-service
+#             port:
+#               number: 80
 

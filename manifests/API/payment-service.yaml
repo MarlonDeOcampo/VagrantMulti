@@ -6,7 +6,7 @@ metadata:
   labels:
     app:  payment-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: payment-service
@@ -17,9 +17,14 @@ spec:
     spec:
       containers:
       - name:  payment-service
-        image:  alhon05/gosimplecrud:v15
+        image:  alhon05/gosimplecrud:v24
         ports:
         - containerPort: 4005
+        env:
+          - name: DB_URL
+            value: "postgres://postgres:secret1@10.43.246.30/postgres"
+          - name: PORT
+            value: "4005"
 ---
 #Service
 apiVersion: v1
@@ -32,8 +37,8 @@ spec:
     app: payment-service
   # Should be typed ClusterIP - NodePort if you want to bypass the ingress and fortforward the traffic to the desired port just for testing purposes only
   # Port forward using  - kubectl port-forward pod/pod-name 4005:4005
-  type: NodePort 
+  type: ClusterIP   
   ports:
     - protocol: TCP
-      port: 80
+      port: 4005
       targetPort: 4005

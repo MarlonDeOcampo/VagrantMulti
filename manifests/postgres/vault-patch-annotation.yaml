@@ -5,4 +5,13 @@ spec:
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/agent-inject-secret-database-config.txt: "secret/data/postgres/config"
         vault.hashicorp.com/role: "postgres"
+        vault.hashicorp.com/agent-inject-template-database-config.txt: |
+            {{- with secret "secret/data/postgres/config" -}}
+              {
+                "POSTGRES_USER" : "{{ .Data.data.POSTGRES_USER }}",
+                "POSTGRES_PASSWORD" : "{{ .Data.data.POSTGRES_PASSWORD  }}",
+                "POSTGRES_DB" : "{{ .Data.data.POSTGRES_DB  }}"
+              }
+            {{- end -}}
+        
         
