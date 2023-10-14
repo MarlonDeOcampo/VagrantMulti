@@ -1,0 +1,3 @@
+enabled: true
+address: "http://vault.hashicorp.svc.cluster.local:8200"
+skipTLSVerify: true
